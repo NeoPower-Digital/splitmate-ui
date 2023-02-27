@@ -9,7 +9,7 @@ const Home: React.FC<HomeProps> = () => {
   const userName = "Brian";
   const positiveMessage = "🟢 You are owed";
   const negativeMessage = "🔴 You owe";
-  const balance = -100;
+  const balance = -340;
   const token = "USDT";
 
   return (
