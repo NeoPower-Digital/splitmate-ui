@@ -1,46 +1,31 @@
-import { NextLinkComposed } from "@/components/Link";
-import { MenuItem, MenuList, Paper, Stack, Typography } from "@mui/material";
+import ActionsSection from "@/components/ActionsSection";
+import GroupsSection from "@/components/GroupsSection";
+import LatestActivitySection from "@/components/LatestActivitySection";
+import { Stack, Typography } from "@mui/material";
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
-  const menuItems = [
-    {
-      path: "new-group",
-      label: "Create group",
-    },
-    {
-      path: "join-group",
-      label: "Join group",
-    },
-    {
-      path: "new-expense",
-      label: "Add expense",
-    },
-    {
-      path: "settle-up",
-      label: "Settle up",
-    },
-  ];
+  const userName = "Brian";
+  const positiveMessage = "🟢 You are owed";
+  const negativeMessage = "🔴 You owe";
+  const balance = -340;
+  const token = "USDT";
 
   return (
     <Stack gap={2}>
-      <Typography variant="h4">Welcom to SplitMate!</Typography>
-      <Typography>What do you want to do?</Typography>
+      <Typography>👋🏻 Welcome {userName}!</Typography>
 
-      <Paper>
-        <MenuList>
-          {menuItems.map(({ path, label }, index) => (
-            <MenuItem
-              key={index}
-              component={NextLinkComposed}
-              to={{ pathname: path }}
-            >
-              {label}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Paper>
+      <Typography variant="h4">
+        {balance > 0 ? positiveMessage : negativeMessage} {Math.abs(balance)}{" "}
+        {token}
+      </Typography>
+
+      <ActionsSection />
+
+      <GroupsSection />
+
+      <LatestActivitySection />
     </Stack>
   );
 };

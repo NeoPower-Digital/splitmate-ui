@@ -66,9 +66,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Button
               variant="contained"
               color="secondary"
-              startIcon={<SyncAltIcon />}
+              //startIcon={<SyncAltIcon />}
             >
-              Switch chain
+              Connect Wallet
             </Button>
           </Stack>
         </Toolbar>
