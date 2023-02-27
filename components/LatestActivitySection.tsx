@@ -28,7 +28,8 @@ const ActivityItem = ({
       </Stack>
 
       <Typography>
-        {balance > 0 ? positiveMessage : negativeMessage} {balance} {token}
+        {balance > 0 ? positiveMessage : negativeMessage} {Math.abs(balance)}{" "}
+        {token}
       </Typography>
     </Stack>
   );
