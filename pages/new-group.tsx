@@ -1,24 +1,43 @@
 import { URL } from "@/constants/constants";
-import { Stack } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import useCopyToClipboard from "@/hooks/useClipboard";
+import { useState } from "react";
+import DoneIcon from '@mui/icons-material/Done';
+import EditableTitle from "@/components/EditableTitle";
 
 interface NewGroupProps {
     
 }
- 
+
 const NewGroup: React.FC<NewGroupProps> = () => {
+    const [isCopying, setIsCopying] = useState(false);
+    const [_, copy] = useCopyToClipboard();
+
+    // TODO: Replace with unique id from DB
     const id = 1;
     const value = `${URL}join-group/${id}`;
+
+    const handleCopy = ()=> {
+        copy(value);
+        setIsCopying(true);
+
+        setTimeout(() => {
+            setIsCopying(false);
+        }, 2000);
+    }
+
     return ( 
-        <Stack>
-            <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
-                <QRCode
-                size={256}
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={value}
-                viewBox={`0 0 256 256`}
-                />
-            </div>
+        <Stack alignItems='center'>
+            <EditableTitle/>
+            
+            <QRCode
+            size={256}
+            value={value}
+            />
+            
+            <Button onClick={handleCopy} startIcon={ isCopying ? <DoneIcon/> : <ContentCopyIcon/> }>{value}</Button>
         </Stack>
      );
 }
