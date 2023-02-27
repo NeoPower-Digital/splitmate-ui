@@ -7,21 +7,23 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   const userName = "Brian";
-  const positiveMessage = "You are owed";
-  const negativeMessage = "You owe";
-  const balance = 100;
+  const positiveMessage = "🟢 You are owed";
+  const negativeMessage = "🔴 You owe";
+  const balance = -100;
   const token = "USDT";
 
   return (
     <Stack gap={2}>
-      <Typography variant="h4">Welcome {userName}!</Typography>
-      <Typography>
-        {balance > 0 ? positiveMessage : negativeMessage} {balance} {token}
+      <Typography>👋🏻 Welcome {userName}!</Typography>
+
+      <Typography variant="h4">
+        {balance > 0 ? positiveMessage : negativeMessage} {Math.abs(balance)}{" "}
+        {token}
       </Typography>
 
-      <GroupsSection />
-
       <ActionsSection />
+
+      <GroupsSection />
 
       <LatestActivitySection />
     </Stack>
