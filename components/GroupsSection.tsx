@@ -31,7 +31,7 @@ const GroupsSection: React.FC<GroupsSectionProps> = () => {
 
       <Stack direction="row" gap={2}>
         {actions.map(({ icon, label, path }, index) => (
-          <Card key={index} sx={{ flex: 1, p: 2 }}>
+          <Card key={index} sx={{ flex: 1, p: 2 }} >
             <Stack justifyContent="center" alignItems="center">
               {icon}
 
