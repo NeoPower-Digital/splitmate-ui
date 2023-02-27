@@ -34,9 +34,7 @@ export default function App({
 
         <ThemeProvider theme={responsiveFontSizes(createTheme(THEME))}>
           <Layout>
-            <Paper sx={{ p: 4 }} variant="outlined">
-              <Component {...pageProps} />
-            </Paper>
+            <Component {...pageProps} />
           </Layout>
 
           <CssBaseline enableColorScheme />
