@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import styled from '@emotion/styled';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
 import { GetStaticProps } from 'next';
@@ -16,6 +17,10 @@ export type PostProps = {
   published: boolean;
 };
 
+const StyledButton = styled(Button)`
+  width: 100%;
+`;
+
 const Supabase: React.FC<{ feed: PostProps[] }> = (props) => {
   const { data: session } = useSession();
 
@@ -29,14 +34,13 @@ const Supabase: React.FC<{ feed: PostProps[] }> = (props) => {
       {session && (
         <>
           {props.feed.map((post, index) => (
-            <p key={index}>
+            <p style={{ 'text-align': 'center' }} key={index}>
               <b>N°{index}</b> Title: {post.title} | Content: {post.content}
             </p>
           ))}
-          <Button
+          <StyledButton
             variant="contained"
             startIcon={<AddIcon />}
-            sx={{ flex: 1 }}
             onClick={async () => {
               try {
                 const body = {
@@ -53,8 +57,8 @@ const Supabase: React.FC<{ feed: PostProps[] }> = (props) => {
               }
             }}
           >
-            Add expense
-          </Button>
+            Add example
+          </StyledButton>
         </>
       )}
     </>
