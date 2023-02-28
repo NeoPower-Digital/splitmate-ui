@@ -1,5 +1,9 @@
-import prisma from "@/lib/prisma";
-import { GetStaticProps } from "next";
+import prisma from '@/lib/prisma';
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@mui/material';
+import { GetStaticProps } from 'next';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 export type PostProps = {
   id: string;
@@ -13,13 +17,46 @@ export type PostProps = {
 };
 
 const Supabase: React.FC<{ feed: PostProps[] }> = (props) => {
+  const { data: session } = useSession();
+
   return (
     <>
-      {props.feed.map((post) => (
-        <div key={post.id} className="post">
-          <Post post={post} />
+      {!session && (
+        <div>
+          <Link href="/api/auth/signin">Log in</Link>
         </div>
-      ))}
+      )}
+      {session && (
+        <>
+          {props.feed.map((post, index) => (
+            <p key={index}>
+              <b>N°{index}</b> Title: {post.title} | Content: {post.content}
+            </p>
+          ))}
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            sx={{ flex: 1 }}
+            onClick={async () => {
+              try {
+                const body = {
+                  title: 'Example title ',
+                  content: 'Example Content',
+                };
+                await fetch('/api/post', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(body),
+                });
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          >
+            Add expense
+          </Button>
+        </>
+      )}
     </>
   );
 };
@@ -38,23 +75,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: { feed },
     revalidate: 10,
   };
-};
-
-const Post: React.FC<{ post: PostProps }> = ({ post }) => {
-  const authorName = post.author ? post.author.name : "Unknown author";
-  return (
-    <div>
-      <h2>{post.title}</h2>
-      <small>By {authorName}</small>
-      <p>{post.content} </p>
-      <style jsx>{`
-        div {
-          color: inherit;
-          padding: 2rem;
-        }
-      `}</style>
-    </div>
-  );
 };
 
 export default Supabase;

@@ -1,16 +1,17 @@
-import Layout from "@/components/Layout";
-import createEmotionCache from "@/styles/createEmotionCache";
-import GlobalStyles from "@/styles/globals.style";
-import { THEME } from "@/styles/theme.style";
-import { CacheProvider } from "@emotion/react";
+import Layout from '@/components/Layout';
+import { SessionProvider } from 'next-auth/react';
+import createEmotionCache from '@/styles/createEmotionCache';
+import GlobalStyles from '@/styles/globals.style';
+import { THEME } from '@/styles/theme.style';
+import { CacheProvider } from '@emotion/react';
 import {
   createTheme,
   CssBaseline,
   Paper,
   responsiveFontSizes,
   ThemeProvider,
-} from "@mui/material";
-import { Provider } from "jotai";
+} from '@mui/material';
+import { Provider } from 'jotai';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -28,18 +29,20 @@ export default function App({
   emotionCache = clientSideEmotionCache,
 }: AppProps) {
   return (
-    <Provider>
-      <CacheProvider value={emotionCache}>
-        {globalStyles}
+    <SessionProvider session={pageProps.session}>
+      <Provider>
+        <CacheProvider value={emotionCache}>
+          {globalStyles}
 
-        <ThemeProvider theme={responsiveFontSizes(createTheme(THEME))}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <ThemeProvider theme={responsiveFontSizes(createTheme(THEME))}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
 
-          <CssBaseline enableColorScheme />
-        </ThemeProvider>
-      </CacheProvider>
-    </Provider>
+            <CssBaseline enableColorScheme />
+          </ThemeProvider>
+        </CacheProvider>
+      </Provider>
+    </SessionProvider>
   );
 }
