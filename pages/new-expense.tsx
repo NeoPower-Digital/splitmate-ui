@@ -1,11 +1,224 @@
-import { Stack, Typography } from '@mui/material';
+import {
+  ExpenseDistribution,
+  DistributionByMember,
+  DistributionType,
+  Expense,
+} from '@/model/expense';
+import { GroupMember, userGroupsDataMock } from '@/model/groups';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Tab,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface NewExpenseProps {}
 
 const NewExpense: React.FC<NewExpenseProps> = () => {
+  // Initial data
+  const [userGroups, setUserGroups] = useState(userGroupsDataMock);
+
+  // Form data
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [group, setGroup] = useState('');
+  const [groupMembers, setGroupMembers] = useState<Array<GroupMember>>([]);
+  const [paidBy, setPaidBy] = useState(0);
+
+  // Distribution
+  const [distributionType, setDistributionType] =
+    useState<DistributionType>('EQUALLY');
+
+  const [equallyMembersDistribution, setEquallyMembersDistribution] = useState<
+    Array<DistributionByMember>
+  >([]);
+  const [unequallyMembersDistribution, setUnequallyMembersDistribution] =
+    useState<Array<DistributionByMember>>([]);
+
+  useEffect(() => {
+    const defaultEquallyDistribution = groupMembers.map(({ address }) => {
+      return { memberAddress: address, value: true };
+    });
+    setEquallyMembersDistribution(defaultEquallyDistribution);
+
+    const defaultUnequallyDistribution = groupMembers.map(({ address }) => {
+      return { memberAddress: address, value: 0 };
+    });
+    setUnequallyMembersDistribution(defaultUnequallyDistribution);
+  }, [groupMembers]);
+
+  const handleSubmit = () => {
+    let membersDistribution =
+      distributionType === 'EQUALLY'
+        ? equallyMembersDistribution
+        : unequallyMembersDistribution;
+
+    // Filter members with 0 or false distribution value
+    membersDistribution = membersDistribution.filter((m) => !!m.value);
+
+    const distribution: ExpenseDistribution = {
+      distributionType: distributionType,
+      distributionByMembers: membersDistribution,
+    };
+
+    const expense: Expense = {
+      group: Number.parseInt(group),
+      amount: Number.parseFloat(amount),
+      description,
+      payerAddress: groupMembers[paidBy].address,
+      distribution,
+    };
+
+    // TODO: Send expense to blockchain
+    console.log(expense);
+  };
+
   return (
-    <Stack>
-      <Typography>New Expense Page</Typography>
+    <Stack gap={2}>
+      <Typography variant="h3">Add expense</Typography>
+
+      <FormControl>
+        <InputLabel id="group-label">Group</InputLabel>
+        <Select
+          labelId="group-label"
+          id="group"
+          value={group}
+          label="Group"
+          onChange={(event: SelectChangeEvent) => {
+            const groupId = event.target.value;
+            setGroup(groupId);
+            const members = userGroups.find(
+              (g) => g.id === Number.parseInt(groupId)
+            )?.members;
+            setGroupMembers(members || []);
+          }}
+        >
+          {userGroups.map(({ id, name }) => (
+            <MenuItem key={id} value={id}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <TextField
+        id="description"
+        label="Description"
+        autoComplete="off"
+        value={description}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setDescription(event.target.value);
+        }}
+      />
+
+      <TextField
+        required
+        id="amount"
+        label="Amount"
+        autoComplete="off"
+        value={amount}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setAmount(event.target.value);
+        }}
+      />
+
+      <FormControl>
+        <InputLabel id="paid-by-label">Paid by</InputLabel>
+        <Select
+          disabled={groupMembers.length === 0}
+          labelId="paid-by-label"
+          id="paid-by"
+          value={paidBy.toString()}
+          label="Group"
+          onChange={(event: SelectChangeEvent) => {
+            setPaidBy(Number.parseInt(event.target.value));
+          }}
+        >
+          {groupMembers.map(({ name }, index) => (
+            <MenuItem key={index} value={index}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <TabContext value={distributionType}>
+        <TabList
+          onChange={(event, value: DistributionType) => {
+            setDistributionType(value);
+          }}
+        >
+          <Tab value="EQUALLY" label="Equally" sx={{ flex: 1 }} />
+          <Tab value="UNEQUALLY" label="Unequally" sx={{ flex: 1 }} />
+        </TabList>
+
+        <TabPanel value="EQUALLY">
+          {group ? (
+            <Stack>
+              {groupMembers.map(({ name, address }, index) => (
+                <FormControlLabel
+                  key={index}
+                  control={<Checkbox defaultChecked />}
+                  label={name}
+                  onChange={(event, checked) => {
+                    const distribution = equallyMembersDistribution;
+
+                    distribution.map((d) => {
+                      d.value = d.memberAddress === address ? checked : d.value;
+                    });
+
+                    setEquallyMembersDistribution(distribution);
+                  }}
+                />
+              ))}
+            </Stack>
+          ) : (
+            <Typography>Select a group first</Typography>
+          )}
+        </TabPanel>
+
+        <TabPanel value="UNEQUALLY">
+          {group ? (
+            <Stack gap={2}>
+              {groupMembers.map(({ name, address }, index) => (
+                <TextField
+                  key={index}
+                  id={address}
+                  label={name}
+                  autoComplete="off"
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const distribution = unequallyMembersDistribution;
+
+                    const value = Number.parseFloat(event.target.value);
+
+                    distribution.map((d) => {
+                      d.value = d.memberAddress === address ? value : d.value;
+                    });
+
+                    setUnequallyMembersDistribution(distribution);
+                  }}
+                />
+              ))}
+            </Stack>
+          ) : (
+            <Typography>Select a group first</Typography>
+          )}
+        </TabPanel>
+      </TabContext>
+
+      <Button variant="contained" onClick={handleSubmit}>
+        Add expense
+      </Button>
     </Stack>
   );
 };
