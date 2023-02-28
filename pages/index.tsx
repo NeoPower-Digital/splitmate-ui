@@ -21,11 +21,15 @@ const Home: React.FC<HomeProps> = () => {
       path: "settle-up",
       label: "Settle up",
     },
+    {
+      path: "supabase",
+      label: "Test Supabase",
+    },
   ];
 
   return (
     <Stack gap={2}>
-      <Typography variant="h4">Welcom to SplitMate!</Typography>
+      <Typography variant="h4">Welcome to SplitMate!</Typography>
       <Typography>What do you want to do?</Typography>
 
       <Paper>
