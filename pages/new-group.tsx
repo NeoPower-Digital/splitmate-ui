@@ -1,45 +1,91 @@
-import { URL } from "@/constants/constants";
-import { Button, Stack, Typography } from "@mui/material";
-import QRCode from "react-qr-code";
+import EditableTitle from '@/components/EditableTitle';
+import { URL } from '@/constants/constants';
+import useCopyToClipboard from '@/hooks/useClipboard';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import useCopyToClipboard from "@/hooks/useClipboard";
-import { useState } from "react";
 import DoneIcon from '@mui/icons-material/Done';
-import EditableTitle from "@/components/EditableTitle";
+import { Button, Paper, Stack, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import QRCode from 'react-qr-code';
+import {
+  adjectives,
+  Config,
+  names,
+  uniqueNamesGenerator,
+} from 'unique-names-generator';
 
-interface NewGroupProps {
-    
-}
+interface NewGroupProps {}
+
+const config: Config = {
+  dictionaries: [adjectives, names],
+  separator: ' ',
+  style: 'capital',
+};
 
 const NewGroup: React.FC<NewGroupProps> = () => {
-    const [isCopying, setIsCopying] = useState(false);
-    const [_, copy] = useCopyToClipboard();
+  const [isCopying, setIsCopying] = useState(false);
+  const [_, copy] = useCopyToClipboard();
+  const [isSaving, setIsSaving] = useState(false);
+  const [groupName, setGroupName] = useState('');
 
-    // TODO: Replace with unique id from DB
-    const id = 1;
-    const value = `${URL}join-group/${id}`;
+  useEffect(() => {
+    const randomName = uniqueNamesGenerator(config);
 
-    const handleCopy = ()=> {
-        copy(value);
-        setIsCopying(true);
+    setGroupName(randomName);
+  }, []);
 
-        setTimeout(() => {
-            setIsCopying(false);
-        }, 2000);
-    }
+  // TODO: Replace with unique id from DB
+  const id = 1;
+  const groupURL = `${URL}join-group/${id}`;
 
-    return ( 
-        <Stack alignItems='center'>
-            <EditableTitle/>
-            
-            <QRCode
-            size={256}
-            value={value}
-            />
-            
-            <Button onClick={handleCopy} startIcon={ isCopying ? <DoneIcon/> : <ContentCopyIcon/> }>{value}</Button>
+  const handleCopy = () => {
+    copy(groupURL);
+    setIsCopying(true);
+
+    setTimeout(() => {
+      setIsCopying(false);
+    }, 2000);
+  };
+
+  const saveGroupName = (newGroupName: string) => {
+    if (newGroupName === groupName) return;
+
+    // TODO: Save name to DB
+    setIsSaving(true);
+    setGroupName(newGroupName);
+    console.log({ groupName: newGroupName });
+
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 2000);
+  };
+
+  return (
+    <Stack alignItems="center" gap={2}>
+      <EditableTitle
+        title={groupName}
+        handleSave={saveGroupName}
+        isSaving={isSaving}
+      />
+
+      <Paper sx={{ p: 4 }}>
+        <Stack gap={2} alignItems="center">
+          <Typography>
+            Share the link or the QR code for others to join
+          </Typography>
+
+          <QRCode size={128} value={groupURL} />
+
+          <Button
+            startIcon={isCopying ? <DoneIcon /> : <ContentCopyIcon />}
+            color="secondary"
+            onClick={handleCopy}
+          >
+            {groupURL}
+          </Button>
         </Stack>
-     );
-}
- 
+      </Paper>
+    </Stack>
+  );
+};
+
 export default NewGroup;
