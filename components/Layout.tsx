@@ -45,12 +45,3 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 export default Layout;
 
 const LayoutOffset = styled(Box)(({ theme }) => theme.mixins.toolbar);
-
-const Toolbar = styled(MUIToolbar)`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const AppBar = styled(MUIAppBar)`
-  z-index: ${({ theme }) => theme.zIndex.drawer + 1};
-`;
