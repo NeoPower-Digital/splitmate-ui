@@ -1,5 +1,4 @@
 import EditableTitle from '@/components/EditableTitle';
-import { URL } from '@/constants/constants';
 import useCopyToClipboard from '@/hooks/useClipboard';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
@@ -35,7 +34,7 @@ const NewGroup: React.FC<NewGroupProps> = () => {
 
   // TODO: Replace with unique id from DB
   const id = 1;
-  const groupURL = `${URL}join-group/${id}`;
+  const groupURL = `${window.location.origin}/join-group/${id}`;
 
   const handleCopy = () => {
     copy(groupURL);
