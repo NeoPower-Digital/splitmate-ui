@@ -13,6 +13,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { NextLinkComposed } from './Link';
+import WalletWidget from './WalletWidget';
 
 interface NavbarProps {}
 
@@ -51,9 +52,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             </>
           )}
 
-          <Button variant="contained" color="secondary">
-            Connect Wallet
-          </Button>
+          <WalletWidget />
         </Stack>
       </Toolbar>
     </AppBar>
