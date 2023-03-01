@@ -13,7 +13,7 @@ const WalletSelector: React.FC<WalletSelectorProps> = () => {
   return (
     <WalletSelect
       // [Required] The dapp name
-      dappName="Syndeo"
+      dappName="SplitMate"
       // Use if the dapp is controlling the modal toggle.
       open={isOpen}
       // The component that opens the WalletSelect Modal
