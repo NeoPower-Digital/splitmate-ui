@@ -3,10 +3,13 @@ import GroupsSection from '@/components/GroupsSection';
 import LatestActivitySection from '@/components/LatestActivitySection';
 import NetworkContractModal from '@/components/NetworkContractModal';
 import { accountAtom } from '@/states/account.atom';
+import { networkAtom } from '@/states/network.atom';
+import { polkadotAPIAtom } from '@/states/polkadotAPI.atom';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import { Button, Stack, Typography } from '@mui/material';
+import { ApiPromise, WsProvider } from '@polkadot/api';
 import { useAtom } from 'jotai';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface HomeProps {}
 
@@ -25,11 +28,21 @@ const Home: React.FC<HomeProps> = () => {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
+  const [{ chainURL }] = useAtom(networkAtom);
+
   const userName = account?.name;
   const positiveMessage = '🟢 You are owed';
   const negativeMessage = '🔴 You owe';
   const balance = -340;
   const token = 'USDT';
+
+  const [__, setAPI] = useAtom(polkadotAPIAtom);
+
+  useEffect(() => {
+    const provider = new WsProvider(chainURL);
+
+    ApiPromise.create({ provider }).then(setAPI);
+  }, [chainURL]);
 
   return (
     <>
