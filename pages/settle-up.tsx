@@ -34,7 +34,7 @@ const SettleUp: React.FC<SettleUpProps> = () => {
       result.push(debt);
     } else {
       result.splice(
-        selectedDebts.findIndex((d) => d == debt),
+        selectedDebts.findIndex((d) => d.address === debt.address),
         1
       );
     }
@@ -106,14 +106,16 @@ const SettleUp: React.FC<SettleUpProps> = () => {
           .map(({ amount }) => amount)
           .reduce((accum, current) => accum + current, 0)}
       </Typography>
-      {!isLoading && <LoadingButton
-        onClick={save}
-        loading={isSaving}
-        variant="contained"
-        loadingPosition="end"
-      >
-        {isSaving ? 'Sending transaction' : 'Settle up'}
-      </LoadingButton>}
+      {!isLoading && (
+        <LoadingButton
+          onClick={save}
+          loading={isSaving}
+          variant="contained"
+          loadingPosition="end"
+        >
+          {isSaving ? 'Sending transaction' : 'Settle up'}
+        </LoadingButton>
+      )}
     </Stack>
   );
 };
