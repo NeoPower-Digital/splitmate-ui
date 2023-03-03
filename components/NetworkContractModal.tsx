@@ -66,7 +66,7 @@ const NetworkContractModal: React.FC<NetworkContractModalProps> = ({
   };
 
   return (
-    <Modal
+    <Modal 
       open={modalOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
@@ -78,7 +78,8 @@ const NetworkContractModal: React.FC<NetworkContractModalProps> = ({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          minWidth: '500px',
+          minWidth: '20rem',
+          maxWidth: '35rem'
         }}
         elevation={0}
       >

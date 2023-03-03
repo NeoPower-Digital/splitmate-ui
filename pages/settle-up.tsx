@@ -16,7 +16,6 @@ interface SettleUpProps {
 }
 
 interface Debt {
-  id: number;
   address: string;
   name: string;
   amount: number;
@@ -58,19 +57,16 @@ const SettleUp: React.FC<SettleUpProps> = () => {
     {
       name: 'Bob',
       amount: 10,
-      id: 0,
       address: '0x0',
     },
     {
       name: 'Rick',
       amount: 88,
-      id: 1,
       address: '0x1',
     },
     {
       name: 'Patrick',
       amount: 67,
-      id: 2,
       address: '0x2',
     },
   ];
