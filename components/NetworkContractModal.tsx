@@ -17,6 +17,7 @@ import {
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
 
 interface NetworkContractModalProps {
   modalOpen: boolean;
@@ -51,6 +52,7 @@ const NetworkContractModal: React.FC<NetworkContractModalProps> = ({
     });
 
     setAccount(null);
+    signOut({ redirect: false });
     router.push('/');
 
     handleClose();
