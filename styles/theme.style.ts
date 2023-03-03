@@ -28,8 +28,8 @@ export const GREEN = {
 };
 
 export const COLORS = {
-  MAIN: PINK[400],
-  SECONDARY: GREEN[300],
+  MAIN: '#f27348',
+  SECONDARY: '#26474e',
   LIGHT_BACKGROUND: '#efefef',
   LIGHT_PAPER: '#f4f4f5',
   DARK_BACKGROUND: '#0F172A',
@@ -39,7 +39,7 @@ export const COLORS = {
 
 export const THEME: ThemeOptions = {
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
       main: COLORS.MAIN,
     },
@@ -47,8 +47,8 @@ export const THEME: ThemeOptions = {
       main: COLORS.SECONDARY,
     },
     background: {
-      default: COLORS.DARK_BACKGROUND,
-      paper: COLORS.DARK_PAPER,
+      default: COLORS.LIGHT_BACKGROUND,
+      paper: COLORS.LIGHT_PAPER,
     },
   },
   typography: {

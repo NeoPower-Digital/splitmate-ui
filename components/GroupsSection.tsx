@@ -39,6 +39,7 @@ const GroupsSection: React.FC<GroupsSectionProps> = () => {
               p: 2,
               textDecoration: 'none',
               '&:hover': { filter: 'brightness(0.8)' },
+              backgroundColor: ({ palette }) => palette.primary.main,
             }}
             component={NextLinkComposed}
             to={{ pathname: path }}

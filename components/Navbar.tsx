@@ -1,5 +1,5 @@
 import useIsMobile from '@/hooks/useIsMobile';
-import splitmateLogo from '@/public/vercel.svg';
+import splitmateLogo from '@/public/splitmate.png';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {
   AppBar as MUIAppBar,
@@ -21,14 +21,14 @@ const Navbar: React.FC<NavbarProps> = () => {
   const isMobile = useIsMobile();
 
   return (
-    <AppBar elevation={0} enableColorOnDark>
+    <AppBar elevation={0}>
       <Toolbar>
         <Box component={NextLinkComposed} to={{ pathname: '/' }}>
           <Image
             src={splitmateLogo}
             alt="SplitMate logo"
-            width={80}
-            height={52}
+            width={109}
+            height={42}
           />
         </Box>
 
@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 target="_blank"
                 href="https://github.com/NeoPower-Digital/splitmate-ui"
               >
-                <GitHubIcon />
+                <GitHubIcon color="primary" />
               </IconButton>
             </>
           )}
@@ -68,4 +68,6 @@ const Toolbar = styled(MUIToolbar)`
 
 const AppBar = styled(MUIAppBar)`
   z-index: ${({ theme }) => theme.zIndex.drawer + 1};
+  background-color: ${({ theme }) => theme.palette.background.default};
+  border-bottom: 3px solid ${({ theme }) => theme.palette.primary.main};
 `;
