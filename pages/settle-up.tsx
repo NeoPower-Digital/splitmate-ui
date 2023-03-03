@@ -1,12 +1,14 @@
+import { LoadingButton } from '@mui/lab';
 import {
   Button,
   Checkbox,
   ListItemButton,
   ListItemText,
+  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SettleUpProps {
   ides: number;
@@ -14,7 +16,6 @@ interface SettleUpProps {
 }
 
 interface Debt {
-  id: number;
   address: string;
   name: string;
   amount: number;
@@ -22,6 +23,8 @@ interface Debt {
 
 const SettleUp: React.FC<SettleUpProps> = () => {
   const [selectedDebts, setSelectedDebts] = useState<Array<Debt>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleChange = (debt: Debt, checked: boolean) => {
     let result = [...selectedDebts];
@@ -30,7 +33,7 @@ const SettleUp: React.FC<SettleUpProps> = () => {
       result.push(debt);
     } else {
       result.splice(
-        selectedDebts.findIndex((d) => d == debt),
+        selectedDebts.findIndex((d) => d.address === debt.address),
         1
       );
     }
@@ -38,29 +41,32 @@ const SettleUp: React.FC<SettleUpProps> = () => {
     setSelectedDebts(result);
   };
 
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 2000);
+  }, []);
+
   const save = () => {
     const debtsToSettleUp = selectedDebts.map(({ address, amount }) => {
       return { address, amount };
     });
+    setIsSaving(true);
+    setTimeout(() => setIsSaving(false), 2000);
   };
 
   const debts = [
     {
       name: 'Bob',
       amount: 10,
-      id: 0,
       address: '0x0',
     },
     {
       name: 'Rick',
       amount: 88,
-      id: 1,
       address: '0x1',
     },
     {
       name: 'Patrick',
       amount: 67,
-      id: 2,
       address: '0x2',
     },
   ];
@@ -69,15 +75,25 @@ const SettleUp: React.FC<SettleUpProps> = () => {
     <Stack>
       <Typography variant="h2">Settle up</Typography>
       <Stack direction="column" gap={2} p={2}>
-        {debts.map((debt, index) => (
-          <ListItemButton key={index}>
-            <Checkbox
-              checked={!!selectedDebts.find((d) => d.address === debt.address)}
-              onChange={(event) => handleChange(debt, event.target.checked)}
-            />
-            <ListItemText primary={`${debt.name} $${debt.amount}`} />
-          </ListItemButton>
-        ))}
+        {isLoading ? (
+          <>
+            <Skeleton height={50} variant="rectangular" />
+            <Skeleton height={50} variant="rectangular" />
+            <Skeleton height={50} variant="rectangular" />
+          </>
+        ) : (
+          debts.map((debt, index) => (
+            <ListItemButton key={index}>
+              <Checkbox
+                checked={
+                  !!selectedDebts.find((d) => d.address === debt.address)
+                }
+                onChange={(event) => handleChange(debt, event.target.checked)}
+              />
+              <ListItemText primary={`${debt.name} $${debt.amount}`} />
+            </ListItemButton>
+          ))
+        )}
       </Stack>
       <Typography variant="h4" p={2}>
         You will settle up with{' '}
@@ -86,9 +102,16 @@ const SettleUp: React.FC<SettleUpProps> = () => {
           .map(({ amount }) => amount)
           .reduce((accum, current) => accum + current, 0)}
       </Typography>
-      <Button onClick={save} variant="contained">
-        Settle up
-      </Button>
+      {!isLoading && (
+        <LoadingButton
+          onClick={save}
+          loading={isSaving}
+          variant="contained"
+          loadingPosition="end"
+        >
+          {isSaving ? 'Sending transaction' : 'Settle up'}
+        </LoadingButton>
+      )}
     </Stack>
   );
 };
