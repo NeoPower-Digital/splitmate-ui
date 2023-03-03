@@ -1,8 +1,6 @@
 import {
   Button,
-  Card,
   Checkbox,
-  ListItem,
   ListItemButton,
   ListItemText,
   Stack,
@@ -41,12 +39,9 @@ const SettleUp: React.FC<SettleUpProps> = () => {
   };
 
   const save = () => {
-    const debtsToSettleUp = selectedDebts
-      .map(({ address, amount }) => {
-        return { address, amount };
-      });
-      console.log(debtsToSettleUp);
-      
+    const debtsToSettleUp = selectedDebts.map(({ address, amount }) => {
+      return { address, amount };
+    });
   };
 
   const debts = [
@@ -77,7 +72,7 @@ const SettleUp: React.FC<SettleUpProps> = () => {
         {debts.map((debt, index) => (
           <ListItemButton key={index}>
             <Checkbox
-              checked={!!selectedDebts.find(d => d.address === debt.address)}
+              checked={!!selectedDebts.find((d) => d.address === debt.address)}
               onChange={(event) => handleChange(debt, event.target.checked)}
             />
             <ListItemText primary={`${debt.name} $${debt.amount}`} />
