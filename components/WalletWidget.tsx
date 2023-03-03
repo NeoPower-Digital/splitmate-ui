@@ -19,7 +19,7 @@ const WalletWidget: React.FC<WalletWidgetProps> = () => {
           color="secondary"
           endIcon={<LogoutIcon />}
           onClick={() => {
-            setAccount(null as unknown as WalletAccount);
+            setAccount(null);
             signOut({ redirect: false });
           }}
         >

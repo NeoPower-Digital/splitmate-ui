@@ -40,7 +40,7 @@ const WalletSelector: React.FC<WalletSelectorProps> = () => {
       // If `showAccountsList={true}`, then account selection modal will show up after selecting the a wallet. Default is `false`.
       showAccountsList={true}
       // Callback when an account is selected on the WalletSelect Account Modal. Only relevant when `showAccountsList=true`
-      onAccountSelected={(account: WalletAccount) => {
+      onAccountSelected={(account) => {
         setAccount(account);
 
         api?.setSigner(account.signer as Signer);

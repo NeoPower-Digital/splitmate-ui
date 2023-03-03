@@ -9,7 +9,7 @@ export default async function handler(
   const { address } = req.query;
   console.log(address);
 
-  let { nonce } = await prisma.user.findUnique({
+  let DBAddress = await prisma.user.findUnique({
     where: {
       publicAddress: address as string,
     },
@@ -17,18 +17,20 @@ export default async function handler(
       nonce: true,
     },
   });
-  console.log(nonce);
 
-  if (!nonce) {
-    nonce = randomUUID();
+  console.log(DBAddress?.nonce);
+
+  if (!DBAddress?.nonce) {
+    const nonce = randomUUID();
+
     await prisma.user.create({
       data: {
-        publicAddress: address,
+        publicAddress: address as string,
         nonce: nonce,
       },
     });
     console.log('Created new one');
   }
 
-  return res.json(nonce);
+  return res.json(DBAddress?.nonce as string);
 }

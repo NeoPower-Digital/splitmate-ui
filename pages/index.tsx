@@ -2,7 +2,11 @@ import ActionsSection from '@/components/ActionsSection';
 import GroupsSection from '@/components/GroupsSection';
 import LatestActivitySection from '@/components/LatestActivitySection';
 import NetworkContractModal from '@/components/NetworkContractModal';
+import useQuery from '@/hooks/useQuery';
+import { QUERIES } from '@/model/blockchain';
+import { DebtsByGroup } from '@/model/debts';
 import { accountAtom } from '@/states/account.atom';
+import { debtsByGroupAtom } from '@/states/debts.atom';
 import { networkAtom } from '@/states/network.atom';
 import { polkadotAPIAtom } from '@/states/polkadotAPI.atom';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
@@ -29,20 +33,31 @@ const Home: React.FC<HomeProps> = () => {
   const handleClose = () => setModalOpen(false);
 
   const [{ chainURL }] = useAtom(networkAtom);
+  // TODO: Uncomment when contract metadata is ready
+  // const { getPromise } = useQuery();
 
   const userName = account?.name;
   const positiveMessage = '🟢 You are owed';
   const negativeMessage = '🔴 You owe';
-  const balance = -340;
   const token = 'USDT';
 
+  const [balance, setBalance] = useState(-340);
+
   const [__, setAPI] = useAtom(polkadotAPIAtom);
+  const [debtsByGroup, setDebtsByGroup] = useAtom(debtsByGroupAtom);
 
   useEffect(() => {
     const provider = new WsProvider(chainURL);
 
-    ApiPromise.create({ provider }).then(setAPI);
-  }, [chainURL]);
+    ApiPromise.create({ provider }).then((api) => {
+      setAPI(api);
+
+      // TODO: Uncomment when contract metadata is ready
+      // getPromise(QUERIES.GET_DEBTS_BY_GROUP, account?.address).then((data) => {
+      //   setDebtsByGroup(data as Array<DebtsByGroup>);
+      // });
+    });
+  }, [account?.address, chainURL, setAPI, setDebtsByGroup]);
 
   return (
     <>
