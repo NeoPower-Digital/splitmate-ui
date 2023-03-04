@@ -5,12 +5,13 @@ import {
   Expense,
 } from '@/model/expense';
 import { GroupMember, userGroupsDataMock } from '@/model/groups';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   Button,
   Checkbox,
   FormControl,
   FormControlLabel,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -34,6 +35,7 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
   const [group, setGroup] = useState('');
   const [groupMembers, setGroupMembers] = useState<Array<GroupMember>>([]);
   const [paidBy, setPaidBy] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Distribution
   const [distributionType, setDistributionType] =
@@ -81,6 +83,9 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
 
     // TODO: Send expense to blockchain
     console.log(expense);
+
+    setIsSaving(true);
+    setTimeout(() => setIsSaving(false), 2000);
   };
 
   return (
@@ -123,6 +128,9 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
 
       <TextField
         required
+        InputProps={{
+          startAdornment: <InputAdornment position="start">$</InputAdornment>,
+        }}
         id="amount"
         label="Amount"
         autoComplete="off"
@@ -193,6 +201,11 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
               {groupMembers.map(({ name, address }, index) => (
                 <TextField
                   key={index}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
                   id={address}
                   label={name}
                   autoComplete="off"
@@ -216,9 +229,14 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
         </TabPanel>
       </TabContext>
 
-      <Button variant="contained" onClick={handleSubmit}>
-        Add expense
-      </Button>
+      <LoadingButton
+        variant="contained"
+        onClick={handleSubmit}
+        loadingPosition="end"
+        loading={isSaving}
+      >
+        {isSaving ? 'Sending transaction' : 'Add expense'}
+      </LoadingButton>
     </Stack>
   );
 };
