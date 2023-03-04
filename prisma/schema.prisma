@@ -10,8 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Group {
+  id      String         @id @unique
+  name    String
+  members UsersOnGroup[]
+}
+
 model User {
-  publicAddress String  @id
-  nonce         String  @unique
+  publicAddress String         @id @unique
+  nonce         String         @unique
   name          String?
+  groups        UsersOnGroup[]
+}
+
+model UsersOnGroup {
+  group   Group  @relation(fields: [groupId], references: [id])
+  groupId String
+  user    User   @relation(fields: [userId], references: [publicAddress])
+  userId  String
+
+  @@id([groupId, userId])
 }
