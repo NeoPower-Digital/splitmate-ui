@@ -25,16 +25,18 @@ const NewGroup: React.FC<NewGroupProps> = () => {
   const [_, copy] = useCopyToClipboard();
   const [isSaving, setIsSaving] = useState(false);
   const [groupName, setGroupName] = useState('');
+  const [groupURL, setGroupURL] = useState('');
+
+  // TODO: Replace with unique id from DB
+  const id = 1;
 
   useEffect(() => {
     const randomName = uniqueNamesGenerator(config);
 
+    setGroupURL(`${window.location.origin}/join-group/${id}`);
+
     setGroupName(randomName);
   }, []);
-
-  // TODO: Replace with unique id from DB
-  const id = 1;
-  const groupURL = `${window.location.origin}/join-group/${id}`;
 
   const handleCopy = () => {
     copy(groupURL);
