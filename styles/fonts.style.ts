@@ -1,19 +1,21 @@
-import { Exo_2, Roboto_Mono, Open_Sans } from 'next/font/google';
+import { Nunito, Roboto_Mono } from 'next/font/google';
 
 const robotoMono = Roboto_Mono({ subsets: ['latin'] });
-const exo2 = Exo_2({ subsets: ['latin'] });
-const openSans = Open_Sans({ subsets: ['latin'] });
+const nunito = Nunito({ subsets: ['latin'] });
 
 export const bodyFonts = {
-  fontFamily: openSans.style.fontFamily,
+  fontFamily: nunito.style.fontFamily,
+  color: '#26474e',
 };
 
 export const headingFonts = {
-  fontFamily: openSans.style.fontFamily,
+  fontFamily: nunito.style.fontFamily,
+  color: '#26474e',
 };
 
 export const buttonFonts = {
-  fontFamily: openSans.style.fontFamily,
+  fontFamily: nunito.style.fontFamily,
+  color: '#26474e',
 };
 
 export const currencyFonts = {

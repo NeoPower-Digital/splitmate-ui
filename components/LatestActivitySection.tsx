@@ -1,5 +1,7 @@
-import { List, ListItem, Stack, Typography } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { List, ListItem, Stack, Typography } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SectionTitle from './SectionTitle';
+import HistoryIcon from '@mui/icons-material/History';
 
 interface LatestActivityProps {}
 
@@ -10,15 +12,15 @@ const ActivityItem = ({
   balance,
   token,
 }: any) => {
-  const positiveMessage = "You are owed";
-  const negativeMessage = "You owe";
+  const positiveMessage = 'You are owed';
+  const negativeMessage = 'You owe';
 
   return (
     <Stack
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
     >
       <Stack direction="row" gap={2} alignItems="center">
         <AccountCircleIcon fontSize="large" />
@@ -28,7 +30,7 @@ const ActivityItem = ({
       </Stack>
 
       <Typography>
-        {balance > 0 ? positiveMessage : negativeMessage} {Math.abs(balance)}{" "}
+        {balance > 0 ? positiveMessage : negativeMessage} {Math.abs(balance)}{' '}
         {token}
       </Typography>
     </Stack>
@@ -38,36 +40,36 @@ const ActivityItem = ({
 const LatestActivitySection: React.FC<LatestActivityProps> = () => {
   const activities = [
     {
-      user: "Bob",
-      expenseDescription: "Nuggets",
-      groupName: "ETH Denver",
+      user: 'Bob',
+      expenseDescription: 'Nuggets',
+      groupName: 'ETH Denver',
       balance: 50,
-      token: "USDT",
+      token: 'USDT',
     },
     {
-      user: "Alice",
-      expenseDescription: "Train",
-      groupName: "Couple",
+      user: 'Alice',
+      expenseDescription: 'Train',
+      groupName: 'Couple',
       balance: 10,
-      token: "USDT",
+      token: 'USDT',
     },
     {
-      user: "John",
-      expenseDescription: "AirBnB",
-      groupName: "ETH Denver",
+      user: 'John',
+      expenseDescription: 'AirBnB',
+      groupName: 'ETH Denver',
       balance: -400,
-      token: "USDT",
+      token: 'USDT',
     },
   ];
 
   return (
     <Stack>
-      <Typography>Latest activity</Typography>
+      <SectionTitle icon={<HistoryIcon />} label="Latest activity" />
 
       <List>
         {activities.map(
           ({ user, expenseDescription, groupName, balance, token }, index) => (
-            <ListItem sx={{ width: "100%" }} key={index}>
+            <ListItem sx={{ width: '100%' }} key={index}>
               <ActivityItem
                 user={user}
                 expenseDescription={expenseDescription}

@@ -1,5 +1,5 @@
-import { css, GlobalStyles as Global } from "@mui/material";
-import { FunctionComponent } from "react";
+import { css, GlobalStyles as Global } from '@mui/material';
+import { FunctionComponent } from 'react';
 
 const GlobalStyles: FunctionComponent = () => {
   return (

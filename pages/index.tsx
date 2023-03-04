@@ -2,18 +2,16 @@ import ActionsSection from '@/components/ActionsSection';
 import GroupsSection from '@/components/GroupsSection';
 import LatestActivitySection from '@/components/LatestActivitySection';
 import NetworkContractModal from '@/components/NetworkContractModal';
-import useQuery from '@/hooks/useQuery';
-import { QUERIES } from '@/model/blockchain';
-import { DebtsByGroup } from '@/model/debts';
 import { accountAtom } from '@/states/account.atom';
 import { debtsByGroupAtom } from '@/states/debts.atom';
 import { networkAtom } from '@/states/network.atom';
 import { polkadotAPIAtom } from '@/states/polkadotAPI.atom';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
+import PaidIcon from '@mui/icons-material/Paid';
 
 interface HomeProps {}
 
@@ -37,14 +35,13 @@ const Home: React.FC<HomeProps> = () => {
   // const { getPromise } = useQuery();
 
   const userName = account?.name;
-  const positiveMessage = '🟢 You are owed';
-  const negativeMessage = '🔴 You owe';
+  const positiveMessage = 'You are owed';
+  const negativeMessage = 'You owe';
   const token = 'USDT';
-
-  const [balance, setBalance] = useState(-340);
 
   const [__, setAPI] = useAtom(polkadotAPIAtom);
   const [debtsByGroup, setDebtsByGroup] = useAtom(debtsByGroupAtom);
+  const [balance, setBalance] = useState(340);
 
   useEffect(() => {
     const provider = new WsProvider(chainURL);
@@ -62,32 +59,45 @@ const Home: React.FC<HomeProps> = () => {
   return (
     <>
       <Stack gap={2}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography>
-            {account
-              ? `👋🏻 Welcome ${userName} (${truncate(account?.address)})`
-              : `👋🏻 Hi stranger!`}
-          </Typography>
-
-          <Button
-            variant="text"
-            color="secondary"
-            onClick={handleOpen}
-            startIcon={<SyncAltIcon />}
-            size="small"
+        <Paper elevation={0} variant="outlined">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            p={2}
           >
-            Switch chain
-          </Button>
-        </Stack>
+            <Typography variant="h6">
+              {account
+                ? `👋🏻 Welcome ${userName} (${truncate(account?.address)})`
+                : `👋🏻 Hi stranger!`}
+            </Typography>
 
-        <Typography variant="h4">
-          {balance > 0 ? positiveMessage : negativeMessage} {Math.abs(balance)}{' '}
-          {token}
-        </Typography>
+            <Button
+              variant="text"
+              color="secondary"
+              onClick={handleOpen}
+              startIcon={<SyncAltIcon />}
+              size="small"
+            >
+              Switch chain
+            </Button>
+          </Stack>
+        </Paper>
+
+        <Stack direction="row" gap={1} alignItems="center">
+          <PaidIcon fontSize="large" color="secondary" />
+
+          <Typography variant="h4" alignContent="center">
+            {balance > 0 ? positiveMessage : negativeMessage}{' '}
+            <span
+              style={{
+                fontWeight: 'bold',
+              }}
+            >
+              {Math.abs(balance)} {token}
+            </span>
+          </Typography>
+        </Stack>
 
         <ActionsSection />
 

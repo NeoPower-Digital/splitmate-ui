@@ -2,8 +2,10 @@ import { ROUTES } from '@/constants/routes';
 import AddIcon from '@mui/icons-material/Add';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Card, Stack, Typography } from '@mui/material';
+import { Button, Card, Stack, Typography } from '@mui/material';
 import { NextLinkComposed } from './Link';
+import GroupIcon from '@mui/icons-material/Group';
+import SectionTitle from './SectionTitle';
 
 interface GroupsSectionProps {}
 
@@ -28,28 +30,20 @@ const GroupsSection: React.FC<GroupsSectionProps> = () => {
 
   return (
     <Stack gap={2}>
-      <Typography>Groups</Typography>
+      <SectionTitle icon={<GroupIcon />} label="Groups" />
 
       <Stack direction="row" gap={2}>
         {actions.map(({ icon, label, path }, index) => (
-          <Card
+          <Button
             key={index}
-            sx={{
-              flex: 1,
-              p: 2,
-              textDecoration: 'none',
-              '&:hover': { filter: 'brightness(0.8)' },
-              backgroundColor: ({ palette }) => palette.primary.main,
-            }}
+            startIcon={icon}
             component={NextLinkComposed}
             to={{ pathname: path }}
+            sx={{ flex: 1, backgroundColor: 'lightgray' }}
+            variant="contained"
           >
-            <Stack justifyContent="center" alignItems="center">
-              {icon}
-
-              <Typography>{label}</Typography>
-            </Stack>
-          </Card>
+            {label}
+          </Button>
         ))}
       </Stack>
     </Stack>
