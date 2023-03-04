@@ -10,7 +10,7 @@ export interface PolkadotNetwork {
 const ROCOCO = {
   chainName: 'Rococo',
   chainURL: 'wss://rococo-contracts-rpc.polkadot.io',
-  contractAddress: '-',
+  contractAddress: '5FQBfuiBAn1AaMhH1xD2QUE2yK2r8AvyHtUnzKvktnPvQLeb',
   decimals: 12,
 };
 

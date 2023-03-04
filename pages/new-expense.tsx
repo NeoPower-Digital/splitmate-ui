@@ -4,7 +4,7 @@ import {
   DistributionType,
   Expense,
 } from '@/model/expense';
-import { GroupMember, userGroupsDataMock } from '@/model/groups';
+import { GroupMember, userGroupsDataMock } from '@/model/splitmate';
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   Button,
