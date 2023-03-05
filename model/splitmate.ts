@@ -36,7 +36,7 @@ export const groupsDataMock: Array<Group> = [
   },
   {
     id: 2,
-    name: 'Trip to NY',
+    name: 'Best Friends',
     debtValue: 145,
     members: [
       { address: '0x12...520', name: 'John' },
@@ -46,7 +46,7 @@ export const groupsDataMock: Array<Group> = [
   },
   {
     id: 3,
-    name: 'Soccer game',
+    name: 'House',
     debtValue: 336,
     members: [
       { address: '0x12...636', name: 'Jane' },

@@ -41,22 +41,22 @@ const LatestActivitySection: React.FC<LatestActivityProps> = () => {
   const activities = [
     {
       user: 'Bob',
-      expenseDescription: 'Nuggets',
+      expenseDescription: 'Food truck',
       groupName: 'ETH Denver',
       balance: 50,
       token: 'USDT',
     },
     {
       user: 'Alice',
-      expenseDescription: 'Train',
-      groupName: 'Couple',
+      expenseDescription: 'Pizza',
+      groupName: 'Best Friends',
       balance: 10,
       token: 'USDT',
     },
     {
       user: 'John',
-      expenseDescription: 'AirBnB',
-      groupName: 'ETH Denver',
+      expenseDescription: 'Internet service',
+      groupName: 'House',
       balance: -400,
       token: 'USDT',
     },
