@@ -26,11 +26,11 @@ export interface GroupMember {
 export const groupsDataMock: Array<Group> = [
   {
     id: 1,
-    name: 'ETH Denver',
+    name: 'ETH Denver 23',
     debtValue: 60,
     members: [
       { address: '0x12...456', name: 'Bob' },
-      { address: '0x12...457', name: 'Alice' },
+      { address: '0x12...457', name: 'Rick' },
       { address: '0x12...458', name: 'Tom' },
     ],
   },

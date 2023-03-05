@@ -1,3 +1,4 @@
+import SuccessState from '@/components/SuccessState';
 import WalletWidget from '@/components/WalletWidget';
 import { accountAtom } from '@/states/account.atom';
 import { LoadingButton } from '@mui/lab';
@@ -13,16 +14,21 @@ const JoinGroup: React.FC<JoinGroupProps> = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { groupId } = router.query;
+  const [isSuccess, setIsSuccess] = useState(false);
 
   // TODO: Replace with DB data
   const memberName = useRef('');
-  const groupName = 'ETH Denver';
+  const groupName = 'ETH Denver 23';
 
   const handleClick = () => {
     // TODO: Add member with provided name
     console.log({ name: memberName.current, groupId });
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSuccess(true);
+    }, 2000);
   };
 
   return (
@@ -55,6 +61,12 @@ const JoinGroup: React.FC<JoinGroupProps> = () => {
       ) : (
         <WalletWidget />
       )}
+
+      <SuccessState
+        isSuccess={isSuccess}
+        setIsSuccess={setIsSuccess}
+        message="Joined correctly!"
+      />
     </Stack>
   );
 };

@@ -1,3 +1,4 @@
+import SuccessState from '@/components/SuccessState';
 import { Debt } from '@/model/splitmate';
 import { debtsByGroupAtom } from '@/states/debts.atom';
 import { groupsAtom } from '@/states/groups.atom';
@@ -6,6 +7,7 @@ import { LoadingButton } from '@mui/lab';
 import {
   AccordionDetails,
   Checkbox,
+  Chip,
   FormControlLabel,
   Skeleton,
   Stack,
@@ -28,6 +30,7 @@ const SettleUp: React.FC<SettleUpProps> = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [debtsByGroup, setDebtsByGroup] = useAtom(debtsByGroupAtom);
   const [groups, setGroups] = useAtom(groupsAtom);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setIsLoading(false), 2000);
@@ -52,7 +55,11 @@ const SettleUp: React.FC<SettleUpProps> = () => {
     console.log(selectedDebts);
 
     setIsSaving(true);
-    setTimeout(() => setIsSaving(false), 2000);
+
+    setTimeout(() => {
+      setIsSaving(false);
+      setIsSuccess(true);
+    }, 2000);
   };
 
   const getMemberName = (groupId: number, address: string) => {
@@ -64,9 +71,10 @@ const SettleUp: React.FC<SettleUpProps> = () => {
   return (
     <Stack gap={2}>
       <Typography variant="h2">Settle up</Typography>
+      <Typography variant="h6">Select debts:</Typography>
 
       {debtsByGroup.map(({ groupId, debts }) => (
-        <Accordion key={groupId}>
+        <Accordion key={groupId} variant="outlined">
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h6">
               {groups.find((g) => g.id === groupId)?.name}
@@ -114,14 +122,17 @@ const SettleUp: React.FC<SettleUpProps> = () => {
         </Accordion>
       ))}
 
-      <Typography variant="h4" p={2}>
-        You will settle up with{' '}
-        {selectedDebts.map(({ name }) => name).join(', ')} for{' '}
-        {selectedDebts
-          .map(({ amount }) => amount)
-          .reduce((accum, current) => accum + current, 0)}{' '}
-        {token}
-      </Typography>
+      {!isLoading && (
+        <Stack gap={2}>
+          <Typography variant="h5">You will settle up with </Typography>
+
+          <Typography>
+            {selectedDebts.map(({ name }, index) => (
+              <Chip key={index} label={`👤 ${name}`} sx={{ mr: 1, mb: 1 }} />
+            ))}
+          </Typography>
+        </Stack>
+      )}
 
       {!isLoading && (
         <LoadingButton
@@ -130,9 +141,19 @@ const SettleUp: React.FC<SettleUpProps> = () => {
           variant="contained"
           loadingPosition="end"
         >
-          {isSaving ? 'Sending transaction' : 'Settle up'}
+          {isSaving
+            ? 'Sending transaction'
+            : `Settle up for ${selectedDebts
+                .map(({ amount }) => amount)
+                .reduce((accum, current) => accum + current, 0)} ${token}`}
         </LoadingButton>
       )}
+
+      <SuccessState
+        isSuccess={isSuccess}
+        setIsSuccess={setIsSuccess}
+        message="Settled up correctly!"
+      />
     </Stack>
   );
 };

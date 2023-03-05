@@ -1,4 +1,5 @@
 import EditableTitle from '@/components/EditableTitle';
+import SuccessState from '@/components/SuccessState';
 import useCopyToClipboard from '@/hooks/useClipboard';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
@@ -6,16 +7,17 @@ import { Button, Paper, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import {
-  adjectives,
+  colors,
   Config,
-  names,
+  NumberDictionary,
   uniqueNamesGenerator,
 } from 'unique-names-generator';
 
 interface NewGroupProps {}
 
+const numberDictionary = NumberDictionary.generate({ min: 1, max: 10 });
 const config: Config = {
-  dictionaries: [adjectives, names],
+  dictionaries: [colors, numberDictionary],
   separator: ' ',
   style: 'capital',
 };
@@ -26,6 +28,7 @@ const NewGroup: React.FC<NewGroupProps> = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [groupURL, setGroupURL] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   // TODO: Replace with unique id from DB
   const id = 1;
@@ -35,7 +38,7 @@ const NewGroup: React.FC<NewGroupProps> = () => {
 
     setGroupURL(`${window.location.origin}/join-group/${id}`);
 
-    setGroupName(randomName);
+    setGroupName(`Group ${randomName}`);
   }, []);
 
   const handleCopy = () => {
@@ -57,6 +60,7 @@ const NewGroup: React.FC<NewGroupProps> = () => {
 
     setTimeout(() => {
       setIsSaving(false);
+      setIsSuccess(true);
     }, 2000);
   };
 
@@ -85,6 +89,12 @@ const NewGroup: React.FC<NewGroupProps> = () => {
           </Button>
         </Stack>
       </Paper>
+
+      <SuccessState
+        isSuccess={isSuccess}
+        setIsSuccess={setIsSuccess}
+        message="Name updated correctly!"
+      />
     </Stack>
   );
 };
