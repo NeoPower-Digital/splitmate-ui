@@ -1,1 +1,1504 @@
-{}
+{
+  "source": {
+    "hash": "0x9c6b031caeee6296e730e10e893384e0e410d45b1d74924aed67a3c02a41d88a",
+    "language": "ink! 4.0.1",
+    "compiler": "rustc 1.69.0-nightly",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "2.0.1",
+      "rust_toolchain": "nightly-x86_64-unknown-linux-gnu",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
+  },
+  "contract": {
+    "name": "splitmate",
+    "version": "0.1.0",
+    "authors": ["NeoPower Digital <contact@neopower.digital>"]
+  },
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "token_address",
+            "type": {
+              "displayName": ["AccountId"],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink_primitives", "ConstructorResult"],
+          "type": 15
+        },
+        "selector": "0x9bae9d5e"
+      }
+    ],
+    "docs": [],
+    "events": [],
+    "lang_error": {
+      "displayName": ["ink", "LangError"],
+      "type": 17
+    },
+    "messages": [
+      {
+        "args": [
+          {
+            "label": "members_to_add",
+            "type": {
+              "displayName": ["Vec"],
+              "type": 18
+            }
+          }
+        ],
+        "docs": [],
+        "label": "add_group",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 20
+        },
+        "selector": "0xd410ad9f"
+      },
+      {
+        "args": [
+          {
+            "label": "expense_to_add",
+            "type": {
+              "displayName": ["ExpenseInput"],
+              "type": 23
+            }
+          }
+        ],
+        "docs": [],
+        "label": "add_expense",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 20
+        },
+        "selector": "0x69620b55"
+      },
+      {
+        "args": [
+          {
+            "label": "group_id",
+            "type": {
+              "displayName": ["u128"],
+              "type": 3
+            }
+          }
+        ],
+        "docs": [],
+        "label": "get_group_distribution",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 27
+        },
+        "selector": "0xe24f251e"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "label": "get_member_account",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 33
+        },
+        "selector": "0x53bb7cf1"
+      },
+      {
+        "args": [
+          {
+            "label": "group_id",
+            "type": {
+              "displayName": ["u128"],
+              "type": 3
+            }
+          }
+        ],
+        "docs": [],
+        "label": "get_group",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 40
+        },
+        "selector": "0x9e7a2a9a"
+      },
+      {
+        "args": [
+          {
+            "label": "group_id",
+            "type": {
+              "displayName": ["u128"],
+              "type": 3
+            }
+          }
+        ],
+        "docs": [],
+        "label": "get_expenses_by_group",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 42
+        },
+        "selector": "0x82124beb"
+      },
+      {
+        "args": [
+          {
+            "label": "debts_to_pay",
+            "type": {
+              "displayName": ["Vec"],
+              "type": 44
+            }
+          }
+        ],
+        "docs": [],
+        "label": "settle_up",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 46
+        },
+        "selector": "0x57c8ecf3"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              },
+              "name": "token_address"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xd685d06b",
+                              "ty": 3
+                            }
+                          },
+                          "name": "id"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xd685d06b",
+                              "ty": 4
+                            }
+                          },
+                          "name": "members"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0xd685d06b",
+                              "ty": 8
+                            }
+                          },
+                          "name": "next_expense_id"
+                        }
+                      ],
+                      "name": "Group"
+                    }
+                  },
+                  "root_key": "0xd685d06b"
+                }
+              },
+              "name": "groups"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0xc742ddf3",
+                      "ty": 9
+                    }
+                  },
+                  "root_key": "0xc742ddf3"
+                }
+              },
+              "name": "group_expenses"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0xcb4907ca",
+                      "ty": 14
+                    }
+                  },
+                  "root_key": "0xcb4907ca"
+                }
+              },
+              "name": "member_groups"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 3
+                }
+              },
+              "name": "next_group_id"
+            }
+          ],
+          "name": "Splitmate"
+        }
+      },
+      "root_key": "0x00000000"
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 1,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": ["ink_primitives", "types", "AccountId"]
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 2
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 5
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "address",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "name",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "debt_value",
+                "type": 7,
+                "typeName": "i128"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "group", "GroupMember"]
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "primitive": "i128"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 10
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "id",
+                "type": 8,
+                "typeName": "u32"
+              },
+              {
+                "name": "group_id",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "amount",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "distribution_type",
+                "type": 11,
+                "typeName": "DistributionType"
+              },
+              {
+                "name": "members",
+                "type": 12,
+                "typeName": "Vec<ExpenseMember>"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "expense", "Expense"]
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "EQUALLY"
+              },
+              {
+                "index": 1,
+                "name": "UNEQUALLY"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "expense", "DistributionType"]
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 13
+          }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "address",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "paid",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "must_pay",
+                "type": 3,
+                "typeName": "u128"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "expense", "ExpenseMember"]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 3
+          }
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": ["ink_primitives", "LangError"]
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 19
+          }
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "address",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "name",
+                "type": 6,
+                "typeName": "String"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "input_models", "GroupMemberInput"]
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 21
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 21
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "MemberIsNotInTheGroup"
+              },
+              {
+                "index": 1,
+                "name": "ExpenseDistributionMemberIsNotInTheGroup"
+              },
+              {
+                "index": 2,
+                "name": "ExpenseAmountIsZero"
+              },
+              {
+                "index": 3,
+                "name": "ExpenseWithoutPayers"
+              },
+              {
+                "index": 4,
+                "name": "ExpenseWithoutMembers"
+              },
+              {
+                "index": 5,
+                "name": "ExpenseWithoutDistributionMembers"
+              },
+              {
+                "index": 6,
+                "name": "GroupDoesNotExist"
+              },
+              {
+                "index": 7,
+                "name": "TransferError"
+              },
+              {
+                "index": 8,
+                "name": "MemberDoesNotHaveGroups"
+              },
+              {
+                "index": 9,
+                "name": "TheGroupIsSettled"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "errors", "ContractError"]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "group_id",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "amount",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "payer_address",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "distribution",
+                "type": 24,
+                "typeName": "DistributionInput"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "input_models", "ExpenseInput"]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "distribution_type",
+                "type": 11,
+                "typeName": "DistributionType"
+              },
+              {
+                "name": "distribution_by_members",
+                "type": 25,
+                "typeName": "Vec<DistributionByMemberInput>"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "input_models", "DistributionInput"]
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 26
+          }
+        }
+      }
+    },
+    {
+      "id": 26,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "member_address",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "value",
+                "type": 3,
+                "typeName": "u128"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "input_models", "DistributionByMemberInput"]
+      }
+    },
+    {
+      "id": 27,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 28
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 28
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 28,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 29
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 29
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 29,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 30
+          }
+        }
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "member_account",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "total_debt",
+                "type": 7,
+                "typeName": "i128"
+              },
+              {
+                "name": "transfers",
+                "type": 31,
+                "typeName": "Vec<GroupMemberDistributionTransfer>"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "output_models", "GroupMemberDistribution"]
+      }
+    },
+    {
+      "id": 31,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 32
+          }
+        }
+      }
+    },
+    {
+      "id": 32,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "member_account",
+                "type": 0,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "value",
+                "type": 3,
+                "typeName": "u128"
+              }
+            ]
+          }
+        },
+        "path": [
+          "splitmate",
+          "output_models",
+          "GroupMemberDistributionTransfer"
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 34
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 34
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 34,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 35
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 35
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 35,
+      "type": {
+        "def": {
+          "tuple": [36, 38]
+        }
+      }
+    },
+    {
+      "id": 36,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 37
+          }
+        }
+      }
+    },
+    {
+      "id": 37,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "id",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "members",
+                "type": 4,
+                "typeName": "Vec<GroupMember>"
+              },
+              {
+                "name": "next_expense_id",
+                "type": 8,
+                "typeName": "u32"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "group", "Group"]
+      }
+    },
+    {
+      "id": 38,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 39
+          }
+        }
+      }
+    },
+    {
+      "id": 39,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "group_id",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "member_distribution",
+                "type": 30,
+                "typeName": "GroupMemberDistribution"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "output_models", "GroupDistributionByMember"]
+      }
+    },
+    {
+      "id": 40,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 41
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 41
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 41,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 37
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 37
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 42,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 43
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 43
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 43,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 9
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 9
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 44,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 45
+          }
+        }
+      }
+    },
+    {
+      "id": 45,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "group_id",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "takers",
+                "type": 25,
+                "typeName": "Vec<DistributionByMemberInput>"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "input_models", "GroupDebtsToPay"]
+      }
+    },
+    {
+      "id": 46,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 47
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 17
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 47
+          },
+          {
+            "name": "E",
+            "type": 17
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 47,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 48
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 22
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 48
+          },
+          {
+            "name": "E",
+            "type": 22
+          }
+        ],
+        "path": ["Result"]
+      }
+    },
+    {
+      "id": 48,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "result",
+                "type": 49,
+                "typeName": "bool"
+              },
+              {
+                "name": "total_settled_debts",
+                "type": 50,
+                "typeName": "Option<Vec<GroupSettledDebts>>"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "output_models", "SettleUpResult"]
+      }
+    },
+    {
+      "id": 49,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    },
+    {
+      "id": 50,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 51
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 51
+          }
+        ],
+        "path": ["Option"]
+      }
+    },
+    {
+      "id": 51,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 52
+          }
+        }
+      }
+    },
+    {
+      "id": 52,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "group_id",
+                "type": 3,
+                "typeName": "u128"
+              },
+              {
+                "name": "takers",
+                "type": 53,
+                "typeName": "Vec<AccountId>"
+              }
+            ]
+          }
+        },
+        "path": ["splitmate", "output_models", "GroupSettledDebts"]
+      }
+    },
+    {
+      "id": 53,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 0
+          }
+        }
+      }
+    }
+  ],
+  "version": "4"
+}

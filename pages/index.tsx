@@ -2,8 +2,12 @@ import ActionsSection from '@/components/ActionsSection';
 import GroupsSection from '@/components/GroupsSection';
 import LatestActivitySection from '@/components/LatestActivitySection';
 import NetworkContractModal from '@/components/NetworkContractModal';
+import useQuery from '@/hooks/useQuery';
+import { splitMateAccountMock } from '@/model/splitmate';
 import { accountAtom } from '@/states/account.atom';
+import { balanceAtom } from '@/states/balance.atom';
 import { debtsByGroupAtom } from '@/states/debts.atom';
+import { groupsAtom } from '@/states/groups.atom';
 import { networkAtom } from '@/states/network.atom';
 import { polkadotAPIAtom } from '@/states/polkadotAPI.atom';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
@@ -11,7 +15,6 @@ import { Button, Paper, Stack, Typography } from '@mui/material';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import PaidIcon from '@mui/icons-material/Paid';
 
 interface HomeProps {}
 
@@ -31,17 +34,12 @@ const Home: React.FC<HomeProps> = () => {
   const handleClose = () => setModalOpen(false);
 
   const [{ chainURL }] = useAtom(networkAtom);
-  // TODO: Uncomment when contract metadata is ready
-  // const { getPromise } = useQuery();
-
-  const userName = account?.name;
-  const positiveMessage = 'You are owed';
-  const negativeMessage = 'You owe';
-  const token = 'USDT';
+  const { getPromise } = useQuery();
 
   const [__, setAPI] = useAtom(polkadotAPIAtom);
   const [debtsByGroup, setDebtsByGroup] = useAtom(debtsByGroupAtom);
-  const [balance, setBalance] = useState(340);
+  const [groups, setGroups] = useAtom(groupsAtom);
+  const [balance, setBalance] = useAtom(balanceAtom);
 
   useEffect(() => {
     const provider = new WsProvider(chainURL);
@@ -49,12 +47,16 @@ const Home: React.FC<HomeProps> = () => {
     ApiPromise.create({ provider }).then((api) => {
       setAPI(api);
 
-      // TODO: Uncomment when contract metadata is ready
-      // getPromise(QUERIES.GET_DEBTS_BY_GROUP, account?.address).then((data) => {
-      //   setDebtsByGroup(data as Array<DebtsByGroup>);
-      // });
+      setGroups(splitMateAccountMock.groups);
+      setDebtsByGroup(splitMateAccountMock.debtsByGroup);
+
+      const balanceResult = splitMateAccountMock.groups
+        .map((g) => g.debtValue)
+        .reduce((accum, curr) => accum + curr, 0);
+
+      setBalance(balanceResult);
     });
-  }, [account?.address, chainURL, setAPI, setDebtsByGroup]);
+  }, [chainURL, setAPI, setBalance, setDebtsByGroup, setGroups]);
 
   return (
     <>
@@ -68,7 +70,7 @@ const Home: React.FC<HomeProps> = () => {
           >
             <Typography variant="h6">
               {account
-                ? `👋🏻 Welcome ${userName} (${truncate(account?.address)})`
+                ? `👋🏻 Welcome ${account?.name} (${truncate(account?.address)})`
                 : `👋🏻 Hi stranger!`}
             </Typography>
 
@@ -83,21 +85,6 @@ const Home: React.FC<HomeProps> = () => {
             </Button>
           </Stack>
         </Paper>
-
-        <Stack direction="row" gap={1} alignItems="center">
-          <PaidIcon fontSize="large" color="secondary" />
-
-          <Typography variant="h4" alignContent="center">
-            {balance > 0 ? positiveMessage : negativeMessage}{' '}
-            <span
-              style={{
-                fontWeight: 'bold',
-              }}
-            >
-              {Math.abs(balance)} {token}
-            </span>
-          </Typography>
-        </Stack>
 
         <ActionsSection />
 

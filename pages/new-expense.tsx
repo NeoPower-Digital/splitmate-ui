@@ -1,13 +1,15 @@
+import SuccessState from '@/components/SuccessState';
 import {
-  ExpenseDistribution,
   DistributionByMember,
   DistributionType,
   Expense,
+  ExpenseDistribution,
 } from '@/model/expense';
-import { GroupMember, userGroupsDataMock } from '@/model/groups';
+import { GroupMember } from '@/model/splitmate';
+import { groupsAtom } from '@/states/groups.atom';
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab';
 import {
-  Button,
+  Alert,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -21,13 +23,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 
 interface NewExpenseProps {}
 
 const NewExpense: React.FC<NewExpenseProps> = () => {
   // Initial data
-  const [userGroups, setUserGroups] = useState(userGroupsDataMock);
+  const [groups, setGroups] = useAtom(groupsAtom);
 
   // Form data
   const [amount, setAmount] = useState('');
@@ -36,6 +39,7 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
   const [groupMembers, setGroupMembers] = useState<Array<GroupMember>>([]);
   const [paidBy, setPaidBy] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   // Distribution
   const [distributionType, setDistributionType] =
@@ -85,7 +89,11 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
     console.log(expense);
 
     setIsSaving(true);
-    setTimeout(() => setIsSaving(false), 2000);
+
+    setTimeout(() => {
+      setIsSaving(false);
+      setIsSuccess(true);
+    }, 2000);
   };
 
   return (
@@ -102,13 +110,13 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
           onChange={(event: SelectChangeEvent) => {
             const groupId = event.target.value;
             setGroup(groupId);
-            const members = userGroups.find(
+            const members = groups.find(
               (g) => g.id === Number.parseInt(groupId)
             )?.members;
             setGroupMembers(members || []);
           }}
         >
-          {userGroups.map(({ id, name }) => (
+          {groups.map(({ id, name }) => (
             <MenuItem key={id} value={id}>
               {name}
             </MenuItem>
@@ -191,7 +199,9 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
               ))}
             </Stack>
           ) : (
-            <Typography>Select a group first</Typography>
+            <Alert severity="info" variant="outlined">
+              Select a group first
+            </Alert>
           )}
         </TabPanel>
 
@@ -224,7 +234,9 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
               ))}
             </Stack>
           ) : (
-            <Typography>Select a group first</Typography>
+            <Alert severity="info" variant="outlined">
+              Select a group first
+            </Alert>
           )}
         </TabPanel>
       </TabContext>
@@ -237,6 +249,12 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
       >
         {isSaving ? 'Sending transaction' : 'Add expense'}
       </LoadingButton>
+
+      <SuccessState
+        isSuccess={isSuccess}
+        setIsSuccess={setIsSuccess}
+        message="Expense added correctly!"
+      />
     </Stack>
   );
 };
