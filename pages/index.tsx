@@ -11,7 +11,7 @@ import { groupsAtom } from '@/states/groups.atom';
 import { networkAtom } from '@/states/network.atom';
 import { polkadotAPIAtom } from '@/states/polkadotAPI.atom';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import { Alert, Button, Paper, Stack, Typography } from '@mui/material';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -61,6 +61,10 @@ const Home: React.FC<HomeProps> = () => {
   return (
     <>
       <Stack gap={2}>
+        <Alert severity="info" variant="outlined">
+          UI mocked for demo purposes
+        </Alert>
+
         <Paper elevation={0} variant="outlined">
           <Stack
             direction="row"
