@@ -2,6 +2,7 @@
 export interface Debt {
   address: string;
   amount: number;
+  name?: string;
 }
 
 export interface DebtsByGroup {
@@ -22,7 +23,7 @@ export interface GroupMember {
   name: string;
 }
 
-export const userGroupsDataMock: Array<Group> = [
+export const groupsDataMock: Array<Group> = [
   {
     id: 1,
     name: 'ETH Denver',
@@ -111,6 +112,6 @@ export interface SplitMateAccount {
 }
 
 export const splitMateAccountMock: SplitMateAccount = {
-  groups: userGroupsDataMock,
+  groups: groupsDataMock,
   debtsByGroup: debtsByGroupMock,
 };

@@ -1,13 +1,13 @@
 import {
-  ExpenseDistribution,
   DistributionByMember,
   DistributionType,
   Expense,
+  ExpenseDistribution,
 } from '@/model/expense';
-import { GroupMember, userGroupsDataMock } from '@/model/splitmate';
+import { GroupMember } from '@/model/splitmate';
+import { groupsAtom } from '@/states/groups.atom';
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab';
 import {
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -21,13 +21,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 
 interface NewExpenseProps {}
 
 const NewExpense: React.FC<NewExpenseProps> = () => {
   // Initial data
-  const [userGroups, setUserGroups] = useState(userGroupsDataMock);
+  const [groups, setGroups] = useAtom(groupsAtom);
 
   // Form data
   const [amount, setAmount] = useState('');
@@ -102,13 +103,13 @@ const NewExpense: React.FC<NewExpenseProps> = () => {
           onChange={(event: SelectChangeEvent) => {
             const groupId = event.target.value;
             setGroup(groupId);
-            const members = userGroups.find(
+            const members = groups.find(
               (g) => g.id === Number.parseInt(groupId)
             )?.members;
             setGroupMembers(members || []);
           }}
         >
-          {userGroups.map(({ id, name }) => (
+          {groups.map(({ id, name }) => (
             <MenuItem key={id} value={id}>
               {name}
             </MenuItem>

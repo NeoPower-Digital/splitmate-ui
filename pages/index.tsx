@@ -3,9 +3,9 @@ import GroupsSection from '@/components/GroupsSection';
 import LatestActivitySection from '@/components/LatestActivitySection';
 import NetworkContractModal from '@/components/NetworkContractModal';
 import useQuery from '@/hooks/useQuery';
-import { QUERIES } from '@/model/blockchain';
-import { SplitMateAccount } from '@/model/splitmate';
+import { splitMateAccountMock } from '@/model/splitmate';
 import { accountAtom } from '@/states/account.atom';
+import { balanceAtom } from '@/states/balance.atom';
 import { debtsByGroupAtom } from '@/states/debts.atom';
 import { groupsAtom } from '@/states/groups.atom';
 import { networkAtom } from '@/states/network.atom';
@@ -39,6 +39,7 @@ const Home: React.FC<HomeProps> = () => {
   const [__, setAPI] = useAtom(polkadotAPIAtom);
   const [debtsByGroup, setDebtsByGroup] = useAtom(debtsByGroupAtom);
   const [groups, setGroups] = useAtom(groupsAtom);
+  const [balance, setBalance] = useAtom(balanceAtom);
 
   useEffect(() => {
     const provider = new WsProvider(chainURL);
@@ -46,28 +47,16 @@ const Home: React.FC<HomeProps> = () => {
     ApiPromise.create({ provider }).then((api) => {
       setAPI(api);
 
-      if (!account?.address) return;
+      setGroups(splitMateAccountMock.groups);
+      setDebtsByGroup(splitMateAccountMock.debtsByGroup);
 
-      getPromise(QUERIES.GET_DEBTS_BY_GROUP, account?.address).then(
-        (data: any) => {
-          const accountData = data as SplitMateAccount;
+      const balanceResult = splitMateAccountMock.groups
+        .map((g) => g.debtValue)
+        .reduce((accum, curr) => accum + curr, 0);
 
-          console.log('ACCOUNT DATA', accountData);
-
-          // TODO: Calculate and set balance
-          setDebtsByGroup(accountData.debtsByGroup);
-          setGroups(accountData.groups);
-        }
-      );
+      setBalance(balanceResult);
     });
-  }, [
-    account?.address,
-    chainURL,
-    getPromise,
-    setAPI,
-    setDebtsByGroup,
-    setGroups,
-  ]);
+  }, [chainURL, setAPI, setBalance, setDebtsByGroup, setGroups]);
 
   return (
     <>

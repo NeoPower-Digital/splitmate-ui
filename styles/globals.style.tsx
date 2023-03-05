@@ -7,6 +7,7 @@ const GlobalStyles: FunctionComponent = () => {
       styles={css`
         html {
           scroll-behavior: smooth;
+          overflow: scroll;
         }
 
         body {
